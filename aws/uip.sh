@@ -1,7 +1,5 @@
 #!/bin/bash
 
-W2_IID="i-03560e38a39741de9"
-
 update_ip() {
   IID=$1
   echo "Instance-ID: $IID"
@@ -26,5 +24,13 @@ update_ip() {
   echo $NewIP
 }
 
-update_ip $W2_IID
-./ddns.sh -n w2.gocoin.one -p $NewIP
+config_files=$(ls uip*.conf)
+for config_file in $config_files; do
+  echo $config_file
+  iid=$(egrep instance-id $config_file | awk -F '"' '{print $2}')
+  hostname=$(egrep hostname $config_file | awk -F '"' '{print $2}')
+  echo $iid
+  echo $hostname
+  update_ip $iid
+  echo ./ddns.sh -n $hostname -p $NewIP
+done

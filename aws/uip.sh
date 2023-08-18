@@ -12,15 +12,15 @@ update_ip() {
   echo "停止实例..."
   aws ec2 stop-instances --instance-id $IID
   
-  echo "等待3分钟..."
-  sleep 180
+  echo "等待2分钟..."
+  sleep 120
   
   # start instances
   echo "启动实例..."
   aws ec2 start-instances --instance-id $IID
   
-  echo "等待3分钟..."
-  sleep 180
+  echo "等待2分钟..."
+  sleep 120
 
   NewIP=$(aws ec2 describe-instances --instance-id $IID | grep PublicIp | awk -F'[:"]' 'NR==2{print $5}')
   echo $NewIP

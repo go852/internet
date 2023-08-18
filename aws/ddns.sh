@@ -77,4 +77,6 @@ echo RecordID: "$record_id"
 curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/$zoneid/dns_records/$record_id" -H "X-Auth-Email: $email" -H "X-Auth-Key: $key" -H "Content-Type: application/json" --data "{\"id\":\"$zoneid\",\"type\":\"$recordtype\",\"name\":\"$hostname\",\"content\":\"$ip\"}"
 
 echo -e "\n"
+echo "等待2分钟..."
+sleep 120
 ping -c 5 $hostname

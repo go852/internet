@@ -33,4 +33,5 @@ for config_file in $config_files; do
   echo $hostname
   update_ip $iid
   echo ./ddns.sh -n $hostname -p $NewIP
+  ./ddns.sh -n $hostname -p $NewIP
 done

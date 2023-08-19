@@ -138,13 +138,18 @@ install_caddy() {
   echo
   green "安装Caddy ... "
 
-  CADDY_URL="https://api.github.com/repos/caddyserver/caddy/releases/latest?v=$RANDOM"
-  CADDY_LATEST_VERSION="$(curl -s $CADDY_URL | grep 'tag_name' | awk -F '"' '{print $4}')"
-  CADDY_LATEST_VERSION_NUMBER=${CADDY_LATEST_VERSION/v/}
+  #CADDY_URL="https://api.github.com/repos/caddyserver/caddy/releases/latest?v=$RANDOM"
+  #CADDY_LATEST_VERSION="$(curl -s $CADDY_URL | grep 'tag_name' | awk -F '"' '{print $4}')"
+  #CADDY_LATEST_VERSION_NUMBER=${CADDY_LATEST_VERSION/v/}
+  #CADDY_TEMP_FILE="${CADDY_TEMP_PATH}/caddy.tar.gz"
+  #CADDY_DOWNLOAD_URL="https://github.com/caddyserver/caddy/releases/download"
+  #CADDY_DOWNLOAD_URL="${CADDY_DOWNLOAD_URL}/${CADDY_LATEST_VERSION}/caddy_${CADDY_LATEST_VERSION_NUMBER}_linux_${CADDY_ARCH}.tar.gz"
+  CADDY_URL="https://api.github.com/repos/klzgrad/forwardproxy/releases/latest?v=$RANDOM"
+  CADDY_LATEST_VERSION="$(curl -s $CADDY_URL | awk -F '"' '/"tag_name"/{print $4}')"
   CADDY_TEMP_PATH="/tmp/install_caddy"
-  CADDY_TEMP_FILE="${CADDY_TEMP_PATH}/caddy.tar.gz"
-  CADDY_DOWNLOAD_URL="https://github.com/caddyserver/caddy/releases/download"
-  CADDY_DOWNLOAD_URL="${CADDY_DOWNLOAD_URL}/${CADDY_LATEST_VERSION}/caddy_${CADDY_LATEST_VERSION_NUMBER}_linux_${CADDY_ARCH}.tar.gz"
+  CADDY_TEMP_FILE="${CADDY_TEMP_PATH}/caddy.tar.xz"
+  CADDY_DOWNLOAD_URL="https://github.com/klzgrad/forwardproxy/releases/download"
+  CADDY_DOWNLOAD_URL="${CADDY_DOWNLOAD_URL}/${CADDY_LATEST_VERSION}/caddy-forwardproxy-naive.tar.xz"
   CADDY_CURRENT_VERSION=""
 
   [[ -f ${CADDY} ]] && CADDY_CURRENT_VERSION=$(caddy version | awk -F' ' '{print $1}')
@@ -164,10 +169,15 @@ install_caddy() {
     red "下载 Caddy 失败！"
     _exit 1
   fi
-
-  tar zxf ${CADDY_TEMP_FILE} -C ${CADDY_TEMP_PATH}
-  cp -f ${CADDY_TEMP_PATH}/caddy ${CADDY}
-  [[ -d ${CADDY_TEMP_PATH} ]] && rm -rf ${CADDY_TEMP_PATH}
+  
+  if [ ! -z "$(echo $CADDY_TEMP_FILE | grep .tar.gz)" ]; then
+    tar xzvf ${CADDY_TEMP_FILE} -C ${CADDY_TEMP_PATH}
+    cp -f ${CADDY_TEMP_PATH}/caddy ${CADDY}
+  else
+    tar xJvf ${CADDY_TEMP_FILE} -C ${CADDY_TEMP_PATH}
+    cp -f ${CADDY_TEMP_PATH}/caddy-forwardproxy-naive/caddy ${CADDY}
+  fi
+  #[[ -d ${CADDY_TEMP_PATH} ]] && rm -rf ${CADDY_TEMP_PATH}
 
   if [[ ! -f ${CADDY} ]]; then
     red "安装 Caddy 出错！"

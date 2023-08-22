@@ -74,7 +74,7 @@ WantedBy=multi-user.target
 EOF
   systemctl enable naive
   systemctl start naive
-  systemctl status naive
+  systemctl list-units | grep naive
 }
 
 install_caddy_service() {
@@ -131,7 +131,7 @@ WantedBy=multi-user.target
 EOF
   systemctl enable caddy
   systemctl start caddy
-  systemctl status caddy
+  systemctl list-units | grep caddy
 }
 
 download_naive() {

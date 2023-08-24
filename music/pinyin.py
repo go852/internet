@@ -14,4 +14,3 @@ def pinyin_capitalize(str):
 if len(sys.argv) == 2:
   str=sys.argv[1]
   pinyin_capitalize(str)
-

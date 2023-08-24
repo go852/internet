@@ -1,36 +1,17 @@
+#!/usr/bin/python3
+import sys
+from xpinyin import Pinyin
 
 def pinyin_capitalize(str):
-    from xpinyin import Pinyin
-    p = Pinyin()
-    py = p.get_pinyin(str, '@@')
-    py2 = py.split('@@')
-    py3 = [c.capitalize() for c in py2]
-    py4 = ''.join(py3[0:])
-    return py4
+  p = Pinyin()
+  py = p.get_pinyin(str, '@@')
+  py2 = py.split('@@')
+  py3 = [c.capitalize() for c in py2]
+  py4 = ''.join(py3[0:])
+  print(py4)
+  return py4
 
-def rename_pinyin(folder='/Volumes/Data/flac'):
-    import os
-    import re
-    curdir = os.getcwd()
-    os.chdir(folder)
-    print("Processing ", folder, "...")
-    for count, f in enumerate(os.listdir()):
-        if f[0] == '.':
-            continue
-        filename = re.sub(r'[0-9]+\.', '',  f)
-        filename = str(count).zfill(3) + '.' + pinyin_capitalize(filename) #
-        if os.path.isdir(f):
-            print("rename ", f, filename)
-            os.rename(f, filename)
-            rename_pinyin(folder = folder + '/' + filename)
-        else:
-            name, ext = os.path.splitext(filename)
-            e = ext.lower()
-            if e.endswith("flac") or e.endswith("wav") or e.endswith("m4a"):
-                print("rename ", f, filename)
-                os.rename(f, filename)
-    os.chdir(curdir)
-
-import sys
-rename_pinyin(sys.argv[1])
+if len(sys.argv) == 2:
+  str=sys.argv[1]
+  pinyin_capitalize(str)
 

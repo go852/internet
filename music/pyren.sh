@@ -1,8 +1,11 @@
 #!/bin/sh
 PINYIN="$(pwd)/pinyin.py"
 usage() {
-  while getopts ":s:t:" opt; do
-    case $opt in    
+  while getopts ":e:s:t:" opt; do
+    case $opt in
+    f)
+      echo "ext: $OPTARG"
+      ext=$OPTARG
     s)
       echo "source: $OPTARG"
       source=$OPTARG
@@ -22,9 +25,9 @@ usage() {
   
   if [[ (-z "$source") || ( -z "$target") ]] ; then
     echo "使用说明："
-    echo "  $0 -s 源目录 -t 目标目录"
+    echo "  $0 -e 扩展名 -s 源目录 -t 目标目录"
     echo "示例："
-    echo "  $0 -s flac -t flac2"
+    echo "  $0 -e flac -s flac -t flac2"
     exit 1
   fi
 }
@@ -47,7 +50,7 @@ process_dir(){
       dest="$target/$newd"
       if [ ! -d "$dest" ] ; then mkdir -p "$dest"; fi
       cd "$d"
-      for f in *.flac; do
+      for f in *.$ext; do
         f2=${f#*-}
         newname=$(python3 $PINYIN "$f2")
         dest_filename="$dest/$newname"

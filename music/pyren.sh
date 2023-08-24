@@ -50,9 +50,9 @@ process_dir(){
       for f in *.flac; do
         f2=${f#*-}
         newname=$(python3 $PINYIN "$f2")
-        echo "$f: $newname"
         dest_filename="$dest/$newname"
-        echo cp "$f" "$dest_filename"
+        echo "$f: $dest_filename"
+        #echo cp "$f" "$dest_filename"
         cp "$f" "$dest_filename"
       done
       echo

@@ -44,7 +44,7 @@ qmc2flac(){
       dest="$target/$d"
       if [ ! -d "$dest" ] ; then mkdir -p "$dest"; fi
       cd $d
-      takiyasha --np *.qmcflac -d "$target"
+      takiyasha --np *.qmcflac -d "$dest"
       cd -
     fi
   done

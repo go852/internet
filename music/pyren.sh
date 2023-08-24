@@ -48,7 +48,8 @@ process_dir(){
       if [ ! -d "$dest" ] ; then mkdir -p "$dest"; fi
       cd "$d"
       for f in *.flac; do
-        newname=$(python3 $PINYIN "$f")
+        f2=${f#*-}
+        newname=$(python3 $PINYIN "$f2")
         echo "$f: $newname"
         dest_filename="$dest/$newname"
         echo cp "$f" "$dest_filename"

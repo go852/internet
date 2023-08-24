@@ -1,7 +1,7 @@
 #!/bin/bash
 USER="User"
 PASSWORD="!Qaz2023"
-while getopts ":h:e:u:p:" opt  
+while getopts ":h:e:u:p:" opt
 do
   case $opt in
   e)  # 处理 -e 选项

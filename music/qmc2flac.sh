@@ -18,9 +18,7 @@ usage() {
     esac
   done
   
-  shift $((OPTIND -1))
-  echo "source:$source"
-  echo "target:$target"  
+  shift $((OPTIND -1)) 
   
   if [[ (-z "$source") || ( -z "$target") ]] ; then
     echo "使用说明："
@@ -43,8 +41,8 @@ qmc2flac(){
   for d in *; do
     if [ -d "$d" ] ; then
       echo "处理目录：$d"
-      target="$target/$d"
-      if [ ! -d "$target" ] ; then mkdir -p "$target"; fi
+      dest="$target/$d"
+      if [ ! -d "$dest" ] ; then mkdir -p "$dest"; fi
       cd $d
       takiyasha --np *.qmcflac -d "$target"
       cd -

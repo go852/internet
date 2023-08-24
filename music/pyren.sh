@@ -6,6 +6,7 @@ usage() {
     f)
       echo "ext: $OPTARG"
       ext=$OPTARG
+      ;;
     s)
       echo "source: $OPTARG"
       source=$OPTARG
@@ -23,7 +24,7 @@ usage() {
   
   shift $((OPTIND -1)) 
   
-  if [[ (-z "$source") || ( -z "$target") ]] ; then
+  if [[ (-z "$ext") ||  (-z "$source") || ( -z "$target") ]] ; then
     echo "使用说明："
     echo "  $0 -e 扩展名 -s 源目录 -t 目标目录"
     echo "示例："

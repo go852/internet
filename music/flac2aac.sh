@@ -41,7 +41,7 @@ usage() {
 }
 
 
-flac2aac(){
+process_dir(){
   [ "$format" == "aac" ] && ext="m4a" || ext="$format"
   echo "ext:$ext"
   
@@ -74,4 +74,4 @@ flac2aac(){
 }
 
 usage $*
-flac2aac
+process_dir

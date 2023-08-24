@@ -28,7 +28,7 @@ usage() {
   fi
 }
 
-qmc2flac(){
+process_dir(){
   PWD="$(pwd)"
   if [[ "${source:0:1}" != "/" ]]; then
     source="$PWD/$source"
@@ -52,4 +52,4 @@ qmc2flac(){
 }
 
 usage $*
-qmc2flac
+process_dir

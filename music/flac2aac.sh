@@ -35,7 +35,7 @@ usage() {
     echo "    aac - m4a"
     echo "示例："
     echo "  $0 -f wav -s flac -t wav"
-    echo "  $0 -f aac -s flac -t wav"
+    echo "  $0 -f aac -s flac -t m4a"
     exit 1
   fi
 }

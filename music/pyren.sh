@@ -3,7 +3,7 @@ PINYIN="$(pwd)/pinyin.py"
 usage() {
   while getopts ":e:s:t:" opt; do
     case $opt in
-    f)
+    e)
       echo "ext: $OPTARG"
       ext=$OPTARG
       ;;

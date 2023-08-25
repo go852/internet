@@ -1,4 +1,5 @@
 #!/bin/bash
+shopt -s nullglob
 
 usage() {
   while getopts ":s:t:" opt; do
@@ -45,12 +46,8 @@ process_dir(){
       if [ ! -d "$dest" ] ; then mkdir -p "$dest"; fi
       cd $d
       for f in *.qmcflac; do
-        echo "处理文件：$f..."
         dest_filename="${f/.qmcflac/.flac}"
-        echo "$dest_filename"
-        if [ -f "$dest/$dest_filename" ]; then
-          echo "$dest/$dest_filename: 文件已存在..."
-        else
+        if [ ! -f "$dest/$dest_filename" ]; then
           takiyasha --np "$f" -d "$dest"
         fi
       done

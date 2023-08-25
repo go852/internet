@@ -1,4 +1,5 @@
 #!/bin/sh
+shopt -s nullglob
 
 format="aac"
 ext="m4a"
@@ -60,12 +61,13 @@ process_dir(){
       dest="$target/$d"
       if [ ! -d "$dest" ] ; then mkdir -p "$dest"; fi
       cd "$d"
-      #takiyasha --np *.qmcflac -d "$dest"
       for f in *.flac; do
         dest_filename="$dest/${f%.flac}.$ext"
-        echo xld "$f" -f aac -o "$dest_filename"
-        xld "$f" -f $format -o "$dest_filename"
-        echo
+        if [ ! -f "$dest_filename" ]; then
+          echo xld "$f" -f aac -o "$dest_filename"
+          xld "$f" -f $format -o "$dest_filename"
+          echo
+        fi
       done
       cd -
     fi

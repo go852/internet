@@ -1,4 +1,6 @@
 #!/bin/sh
+shopt -s nullglob
+
 PINYIN="$(pwd)/pinyin.py"
 usage() {
   while getopts ":e:s:t:" opt; do
@@ -56,7 +58,6 @@ process_dir(){
         newname=$(python3 $PINYIN "$f2")
         dest_filename="$dest/$newname"
         echo "$f: $dest_filename"
-        #echo cp "$f" "$dest_filename"
         cp "$f" "$dest_filename"
       done
       echo

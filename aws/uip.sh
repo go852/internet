@@ -31,6 +31,7 @@ for config_file in $config_files; do
   hostname=$(egrep hostname $config_file | awk -F '"' '{print $2}')
   echo $iid
   echo $hostname
+  #aws ec2 describe-instances --instance-id $iid | grep -e '"LaunchTime"' -e '"Name":'
   update_ip $iid
   echo ./ddns.sh -n $hostname -p $NewIP
   ./ddns.sh -n $hostname -p $NewIP

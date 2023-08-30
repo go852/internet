@@ -2,6 +2,8 @@
 TEMPDIR="/tmp/naive"
 USER="User"
 PASSWORD="!Qaz2023"
+HOST=""
+declare -a HOSTS
 while getopts ":h:e:u:p:" opt
 do
   case $opt in
@@ -10,9 +12,21 @@ do
     EMAIL=$OPTARG
     ;;
   h)  # 处理 -h 选项
+    #echo "0: HOST: $HOST"
+    #echo "0: HOSTS: $HOSTS"
     echo "HOST: $OPTARG"
-    HOST=$OPTARG
-    ALIAS=$(echo $HOST | awk -F '.' '{print $1}')
+    if [ -z "$HOST" ] ; then
+      HOST="$OPTARG"
+      HOSTS+="$HOST"
+      #echo "1: HOST: $HOST#"
+      #echo "1: HOSTS: $HOSTS"
+    else
+      HOST="$OPTARG"
+      HOSTS+=($HOST)
+      #echo "2: HOST: $HOST"
+      #echo "2: HOSTS: $HOSTS"
+    fi
+    echo
     ;;
   u)  # 处理 -u 选项
     echo "USER: $OPTARG"
@@ -28,7 +42,15 @@ do
   esac
 done
 
-if [[ -z "$HOST" || -z "$USER" || -z "$PASSWORD" ]]; then
+#echo "3: HOST: $HOST"
+#echo "3: HOSTS: $HOSTS"
+for host in ${HOSTS[@]}; do 
+  echo $host; 
+  HOST_LIST+=" $host"
+done
+echo "$HOST_LIST"
+
+if [[ -z "$HOST_LIST" || -z "$USER" || -z "$PASSWORD" ]]; then
   echo "请设置EMAIL, HOST，USER，PASSWORD参数"
   echo "  -e EMAIL"
   echo "  -h HOST"
@@ -97,7 +119,7 @@ $(cat /etc/caddy/Caddyfile)" > /etc/caddy/Caddyfile
   fi 
 
   cat >/etc/caddy/sites/Caddyfile.naive <<-EOF
-:443, $HOST {
+:443, $HOST_LIST {
   tls $EMAIL
   forward_proxy {
     basic_auth $USER $PASSWORD # 用户名、密码
@@ -190,7 +212,12 @@ download_caddy() {
 
 show_info() {
   echo
-  echo "naive+https://$USER:$PASSWORD@$HOST:443?padding=false#$ALIAS"
+  #for host in "$HOSTS"; do
+  for host in ${HOSTS[@]}; do
+    #echo "Host: $host"
+    ALIAS=$(echo $host | awk -F '.' '{print $1}')
+    echo "naive+https://$USER:$PASSWORD@$host:443?padding=false#$ALIAS"
+  done
   echo
 }
 

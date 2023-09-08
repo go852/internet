@@ -582,9 +582,7 @@ WantedBy=multi-user.target
 EOF
 
   check_services_status
-  if [ ${CADDY_PID} ]; then
-    systemctl daemon-reload
-  fi
+  systemctl daemon-reload
   systemctl enable caddy
   systemctl restart caddy
   green "Caddy服务安装已完成 ..."

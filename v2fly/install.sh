@@ -240,6 +240,7 @@ uninstall_caddy() {
   else
     systemctl stop caddy
     systemctl disable caddy
+    systemctl daemon-reload
     rm_files "${CADDY}" "${CADDY_SERVICE_FILE}"
     rm_dirs "${CADDY_CONFIG_PATH}"
     red "已卸载Caddy "

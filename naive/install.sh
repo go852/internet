@@ -3,6 +3,9 @@ TEMPDIR="/tmp/naive"
 USER="User"
 PASSWORD="!Qaz2023"
 HOST=""
+CADDY_FILE="/etc/caddy/Caddyfile"
+CADDY_FILE_NAIVE="/etc/caddy/Caddyfile.naive"
+
 declare -a HOSTS
 while getopts ":h:e:u:p:" opt
 do
@@ -109,12 +112,16 @@ install_caddy_service() {
 
 # caddy.naive
   if [ ! -d /etc/caddy ]; then mkdir /etc/caddy; fi
-  touch /etc/caddy/Caddyfile
-  cat >/etc/caddy/Caddyfile.naive <<-EOF
+
+  cat >$CADDY_FILE <<-EOF
 {
   order forward_proxy before reverse_proxy
   order forward_proxy before handle_path
 }
+import /etc/caddy/Caddyfile.*
+EOF
+
+  cat >$CADDY_FILE_NAIVE <<-EOF
 :443, $HOST_LIST {
   tls $EMAIL
   forward_proxy {
@@ -125,7 +132,6 @@ install_caddy_service() {
     upstream http://127.0.0.1:54321
   }  
 }
-import /etc/caddy/Caddyfile
 EOF
 # caddy.service
   cat > $CADDY_SERVICE_FILE <<-EOF
@@ -141,8 +147,8 @@ Requires=network-online.target
 Type=notify
 User=root
 Group=root
-ExecStart=/usr/local/bin/caddy run --environ --config /etc/caddy/Caddyfile.naive
-ExecReload=/usr/local/bin/caddy reload --config /etc/caddy/Caddyfile.naive
+ExecStart=/usr/local/bin/caddy run --environ --config $CADDY_FILE
+ExecReload=/usr/local/bin/caddy reload --config $CADDY_FILE
 TimeoutStopSec=5s
 LimitNOFILE=1048576
 LimitNPROC=512

@@ -109,16 +109,12 @@ install_caddy_service() {
 
 # caddy.naive
   if [ ! -d /etc/caddy ]; then mkdir /etc/caddy; fi
-  if [ -z "$(grep 'order' /etc/caddy/Caddyfile)" ] ; then 
-echo "    
+  touch /etc/caddy/Caddyfile
+  cat >/etc/caddy/Caddyfile.naive <<-EOF
 {
   order forward_proxy before reverse_proxy
   order forward_proxy before handle_path
 }
-$(cat /etc/caddy/Caddyfile)" > /etc/caddy/Caddyfile
-  fi 
-
-  cat >/etc/caddy/sites/Caddyfile.naive <<-EOF
 :443, $HOST_LIST {
   tls $EMAIL
   forward_proxy {
@@ -129,6 +125,7 @@ $(cat /etc/caddy/Caddyfile)" > /etc/caddy/Caddyfile
     upstream http://127.0.0.1:54321
   }  
 }
+import /etc/caddy/Caddyfile
 EOF
 # caddy.service
   cat > $CADDY_SERVICE_FILE <<-EOF
@@ -144,8 +141,8 @@ Requires=network-online.target
 Type=notify
 User=root
 Group=root
-ExecStart=/usr/local/bin/caddy run --environ --config /etc/caddy/Caddyfile
-ExecReload=/usr/local/bin/caddy reload --config /etc/caddy/Caddyfile
+ExecStart=/usr/local/bin/caddy run --environ --config /etc/caddy/Caddyfile.naive
+ExecReload=/usr/local/bin/caddy reload --config /etc/caddy/Caddyfile.naive
 TimeoutStopSec=5s
 LimitNOFILE=1048576
 LimitNPROC=512

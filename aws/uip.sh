@@ -1,6 +1,6 @@
 #!/bin/bash
 
-update_ip() {
+restart_instance() {
   IID=$1
   echo "Instance-ID: $IID"
   OldIP=$(aws ec2 describe-instances --instance-id $IID | grep PublicIp | awk -F'[:"]' 'NR==2{print $5}')
@@ -30,9 +30,14 @@ for config_file in $config_files; do
   iid=$(egrep instance-id $config_file | awk -F '"' '{print $2}')
   hostname=$(egrep hostname $config_file | awk -F '"' '{print $2}')
   echo $iid
-  echo $hostname
+  echo "重启：$hostname"
+  restart_instance $iid
   #aws ec2 describe-instances --instance-id $iid | grep -e '"LaunchTime"' -e '"Name":'
-  update_ip $iid
-  echo ./ddns.sh -h $hostname -p $NewIP
-  ./ddns.sh -h $hostname -p $NewIP
+
+  host_file="${config_file/.conf/.host}"
+  mapfile HOSTS < "$host_file"
+  for host in "${HOSTS[@]}"; do
+    echo ./ddns.sh -h $host -p $NewIP
+    ./ddns.sh -h $host -p $NewIP
+  done
 done

@@ -33,6 +33,6 @@ for config_file in $config_files; do
   echo $hostname
   #aws ec2 describe-instances --instance-id $iid | grep -e '"LaunchTime"' -e '"Name":'
   update_ip $iid
-  echo ./ddns.sh -n $hostname -p $NewIP
-  ./ddns.sh -n $hostname -p $NewIP
+  echo ./ddns.sh -h $hostname -p $NewIP
+  ./ddns.sh -h $hostname -p $NewIP
 done

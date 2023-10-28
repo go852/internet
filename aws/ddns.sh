@@ -4,10 +4,10 @@ key=$(egrep key ddns.conf | awk -F'"' '{print $2}')
 zonename=$(egrep zonename ddns.conf | awk -F'"' '{print $2}')
 hostname=$(egrep hostname ddns.conf | awk -F'"' '{print $2}')
 
-echo "email: $email"
-echo "key: $key"
-echo "zonename: $zonename"
-echo "hostname: $hostname"
+#echo "email: $email"
+#echo "key: $key"
+#echo "zonename: $zonename"
+#echo "hostname: $hostname"
 
 # ipv6 为 AAAA记录 ，ipv4 为 A 记录
 recordtype="A"
@@ -25,7 +25,7 @@ usage(){
   exit 1
 }
 
-while getopts :e:i:k:n:p:z argvs
+while getopts :e:i:k:h:p:z argvs
 do
   case $argvs in
     e)
@@ -52,7 +52,7 @@ do
   esac
 done
 
-if [ -z "$hostname" ] ; then
+if [[ -z "$hostname" ]] ; then
   usage
   exit 1
 fi

@@ -1,17 +1,23 @@
 #!/bin/bash
-key=$(egrep key ddns.conf | awk -F'"' '{print $2}')
 email=$(egrep email ddns.conf | awk -F'"' '{print $2}')
-zoneid=$(egrep zoneid ddns.conf | awk -F'"' '{print $2}')
+key=$(egrep key ddns.conf | awk -F'"' '{print $2}')
 zonename=$(egrep zonename ddns.conf | awk -F'"' '{print $2}')
+hostname=$(egrep hostname ddns.conf | awk -F'"' '{print $2}')
+
+echo "email: $email"
+echo "key: $key"
+echo "zonename: $zonename"
+echo "hostname: $hostname"
+
 # ipv6 为 AAAA记录 ，ipv4 为 A 记录
 recordtype="A"
 
 usage(){
   help="Usage:\n
       -e email\n
+      -h hostname\n
       -i zoneid\n
       -k key\n
-      -n hostname\n
       -p ip\n
       -z zonename\n
       \n"
@@ -31,12 +37,12 @@ do
     k)
       key=$OPTARG
       echo -e "key=$OPTARG\n";;
-    n)
+    h)
       hostname=$OPTARG
       echo -e "hostname=$OPTARG\n";;
     p)
       ip=$OPTARG
-      echo -e "hostname=$OPTARG\n";;
+      echo -e "ip=$OPTARG\n";;
     z)
       zonename=$OPTARG
       echo -e "zonename=$OPTARG\n";;

@@ -48,7 +48,7 @@ restart(){
     echo $iid
     echo "重启：$hostname"
     restart_instance $iid
-    aws ec2 describe-instances --instance-id $iid | grep -e '"LaunchTime"' -e '"Name":'
+    #aws ec2 describe-instances --instance-id $iid | grep -e '"LaunchTime"' -e '"Name":'
   
     host_file="${config_file/.conf/.host}"
     mapfile HOSTS < "$host_file"

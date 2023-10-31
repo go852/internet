@@ -51,8 +51,7 @@ restart(){
     #aws ec2 describe-instances --instance-id $iid | grep -e '"LaunchTime"' -e '"Name":'
   
     host_file="${config_file/.conf/.host}"
-    mapfile HOSTS < "$host_file"
-    for host in "${HOSTS[@]}"; do
+    for host in $(<$host_file); do
       echo ./ddns.sh -h $host -p $NewIP
       ./ddns.sh -h $host -p $NewIP
     done

@@ -9,15 +9,18 @@ do
   esac
 done
 
-XMAX=1152
-YMAX=2376
+if [ $ID ]; then
+  OPT_ID="-s $ID"
+fi
+ADB="adb $OPT_ID"
+
+XMAX=$($ADB shell wm size | awk -F ': ' '{print $2}' | sed 's/x.*//')
+YMAX=$($ADB shell wm size | awk -F ': ' '{print $2}' | sed 's/.*x//')
+echo "XMAX: $XMAX, YMAX:$YMAX"
 
 swipe(){
-  if [ $ID ]; then
-    OPT_ID="-s $ID"
-  fi
-  echo adb $OPT_ID shell input swipe $1 $2 $3 $4
-  adb $OPT_ID shell input swipe $1 $2 $3 $4
+  echo $ADB shell input swipe $1 $2 $3 $4
+  $ADB shell input swipe $1 $2 $3 $4
 }
 
 while true; do

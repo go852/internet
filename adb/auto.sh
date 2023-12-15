@@ -12,7 +12,6 @@ done
 XMAX=1152
 YMAX=2376
 
-#ID="PQY5T21122000998"
 swipe(){
   if [ $ID ]; then
     OPT_ID="-s $ID"

@@ -17,25 +17,21 @@ swipe(){
 }
 
 swipe_left(){
-  t=$(echo "scale=2;$RANDOM % 499 / 5 + 5.27" | bc)
   y1=$((YMAX * (RANDOM % 10 + 50) / 100))
   y2=$((y1 + YMAX * (RANDOM % 5) / 100))
   x1=$((XMAX * (RANDOM % 10 + 50) / 100))
   x2=$((x1 - XMAX * (RANDOM % 8 + 15) / 100))
-  echo "${t}s: $x1 $y1 $x2 $y2"
+  echo "swipe_left: $x1 $y1 $x2 $y2"
   swipe $x1 $y1 $x2 $y2
-  sleep $t
 }
 
 swipe_up(){
-  t=$(echo "scale=2;$RANDOM % 999 / 5 + 1.27" | bc)
   x1=$((XMAX * (RANDOM % 10 + 45) / 100))
   x2=$((x1 + XMAX * (RANDOM % 5) / 100))
   y1=$((YMAX * (RANDOM % 10 + 50) / 100))
   y2=$((y1 - YMAX * (RANDOM % 5 + 30) / 100))
-  echo "${t}s: $x1 $y1 $x2 $y2"
+  echo "swipe_up: $x1 $y1 $x2 $y2"
   swipe $x1 $y1 $x2 $y2
-  sleep $t
 }
 
 get_focus_app(){
@@ -48,16 +44,29 @@ switch_app(){
 }
 
 process_app(){
-  while true; do
+  total_time=0
+  while [[ $(echo "$total_time / 1" | bc ) -lt 3600 ]]; do
     echo "Foucs Application: $(get_focus_app)"
     for app in $SWIPEUP_APPS; do
       if [[ "$(get_focus_app)" == "$app" ]] ; then 
+        t=$(echo "scale=2;$RANDOM % 999 / 5 + 1.27" | bc)
+        echo "after $t s..."
         swipe_up 
+        sleep $t
+        total_time=$(echo "$total_time + $t" | bc)
+        echo "total_time: $total_time seconds..."
+        echo
       fi
     done
     for app in $SWIPELEFT_APPS; do
       if [[ "$(get_focus_app)" == "$app" ]] ; then 
+        t=$(echo "scale=2;$RANDOM % 499 / 5 + 5.27" | bc)
+        echo "after $t s..."
         swipe_left
+        sleep t
+        total_time=$(echo "$total_time + $t" | bc)
+        echo "total_time: $total_time seconds..."
+        echo
       fi
     done
   done
@@ -94,6 +103,6 @@ export -f process_app
 for activity in $ACTIVITIES; do
   echo
   echo $activity
-  #switch_app $activity
+  switch_app $activity
   process_app
 done

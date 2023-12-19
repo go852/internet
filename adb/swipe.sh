@@ -1,15 +1,38 @@
 #!/bin/sh
 
-#ACTIVITIES="com.dragon.read/com.dragon.read.reader.ui.ReaderActivity
+while getopts ":s:" opt
+do
+  case $opt in
+  s)
+    ID=$OPTARG
+    ;;
+  *)
+    echo "Usage:"
+    echo "  -h: help"
+    echo "  -s device_id" 
+    echo
+    exit 1
+    ;;
+  esac
+done
+
+ADB="adb"
+$ADB start-server
+if [ $ID ]; then
+  OPT_ID="-s $ID"
+fi
+ADB="$ADB $OPT_ID"
+
 ACTIVITIES="
   com.ss.android.ugc.aweme.lite/com.ss.android.ugc.aweme.splash.SplashActivity
   com.ss.android.ugc.live/com.ss.android.ugc.aweme.splash.SplashActivity
-  com.sankuai.meituan/com.meituan.android.qtitans.QtitansContainerActivity
   com.ss.android.article.lite/com.ss.android.article.lite.activity.SplashActivity
+  com.dragon.read/com.dragon.read.reader.ui.ReaderActivity
+  com.sankuai.meituan/com.meituan.android.pt.homepage.activity.MainActivity
 "
 
 SWIPEUP_APPS="ss.android.ugc.aweme.lite ss.android.ugc.live sankuai.meituan ss.android.article.lite cat.readall"
-SWIPELEFT_APPS="dragon.read" 
+SWIPELEFT_APPS="dragon.read xs.fm" 
 
 swipe(){
   #echo $ADB shell input swipe $1 $2 $3 $4
@@ -28,19 +51,19 @@ swipe_left(){
 swipe_up(){
   x1=$((XMAX * (RANDOM % 10 + 45) / 100))
   x2=$((x1 + XMAX * (RANDOM % 5) / 100))
-  y1=$((YMAX * (RANDOM % 10 + 50) / 100))
-  y2=$((y1 - YMAX * (RANDOM % 5 + 30) / 100))
+  y1=$((YMAX * (RANDOM % 10 + 70) / 100))
+  y2=$((y1 - YMAX * (RANDOM % 5 + 20) / 100))
   echo "swipe_up: $x1 $y1 $x2 $y2"
   swipe $x1 $y1 $x2 $y2
 }
 
 get_focus_app(){
-  FOCUS_APP=$(adb shell "dumpsys activity | grep mCurrentFocus" | awk -F 'com\.|/' '{print $2}')
+  FOCUS_APP=$($ADB shell "dumpsys window | grep mCurrentFocus" | awk -F 'com\.|/' '{print $2}')
   echo $FOCUS_APP
 }
 
 switch_app(){
-  adb shell am start $1
+  $ADB shell am start $1
 }
 
 process_app(){
@@ -72,37 +95,15 @@ process_app(){
   done
 }
 
-while getopts ":s:" opt
-do
-  case $opt in
-  s)
-    ID=$OPTARG
-    ;;
-  *)
-    echo "Usage:"
-    echo "  -h: help"
-    echo "  -s device_id" 
-    echo
-    exit 1
-    ;;
-  esac
-done
-
-adb start-server
-
-if [ $ID ]; then
-  OPT_ID="-s $ID"
-fi
-ADB="adb $OPT_ID"
-
 XMAX=$($ADB shell wm size | awk -F ': ' '{print $2}' | sed 's/x.*//')
 YMAX=$($ADB shell wm size | awk -F ': ' '{print $2}' | sed 's/.*x//')
 echo "XMAX: $XMAX, YMAX:$YMAX"
 
-export -f process_app
-for activity in $ACTIVITIES; do
-  echo
-  echo $activity
-  switch_app $activity
-  process_app
+while true; do
+  for activity in $ACTIVITIES; do
+    echo
+    echo $activity
+    switch_app $activity
+    process_app
+  done
 done

@@ -23,6 +23,12 @@ if [ $ID ]; then
 fi
 ADB="$ADB $OPT_ID"
 
+
+#  抖音极速版：com.ss.android.ugc.aweme.lite/com.ss.android.ugc.aweme.splash.SplashActivity
+#  抖音火山版：com.ss.android.ugc.live/com.ss.android.ugc.aweme.splash.SplashActivity
+#  头条搜索：com.ss.android.article.lite/com.ss.android.article.lite.activity.SplashActivity
+#  番茄免费小说：com.dragon.read/com.dragon.read.reader.ui.ReaderActivity
+#  美团：com.sankuai.meituan/com.meituan.android.pt.homepage.activity.MainActivity
 ACTIVITIES="
   com.ss.android.ugc.aweme.lite/com.ss.android.ugc.aweme.splash.SplashActivity
   com.ss.android.ugc.live/com.ss.android.ugc.aweme.splash.SplashActivity

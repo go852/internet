@@ -8,8 +8,9 @@ def pinyin_capitalize(str):
   py2 = py.split('@@')
   py3 = [c.capitalize() for c in py2]
   py4 = ' '.join(py3[0:])
-  print(py4)
-  return py4
+  py5 = py4.rstrip(" ")
+  print(py5)
+  return py5
 
 if len(sys.argv) == 2:
   str=sys.argv[1]

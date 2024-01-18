@@ -67,11 +67,12 @@ process_dir() {
       newd=$(python3 $PINYIN "${dir_name#$source_dir/}")
       echo "待处理的目录：$newd"
       dest="$target_dir/$newd"
-      process_dir $f $dest
+      process_dir "$f" "$dest"
     elif [[ "$f" == *".$ext" ]]; then # 文件
       f2=${f#*-}
       newname=$(python3 $PINYIN "$f2")
       dest_file="$target/$newname"
+      dest_file="${dest_file/ ./.}"
       if ! [ -f "$dest_file" ]; then
         process_file "$f" "$dest_file"
       fi

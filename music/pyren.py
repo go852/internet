@@ -3,13 +3,13 @@
 def pinyin_capitalize(str):
     from xpinyin import Pinyin
     p = Pinyin()
-    py = p.get_pinyin(str, '@@')
+    py = p.get_pinyin(str, '@@', tone_marks=1)
     py2 = py.split('@@')
     py3 = [c.capitalize() for c in py2]
-    py4 = ''.join(py3[0:])
+    py4 = ' '.join(py3[0:])
     return py4
 
-def rename_pinyin(folder='/Volumes/Data/flac'):
+def rename_pinyin(folder='/Volumes/Data/music/flac'):
     import os
     import re
     curdir = os.getcwd()

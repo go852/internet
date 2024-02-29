@@ -2,7 +2,7 @@
 
 ID="i-0a96fef467a0abf9b"
 NAME1=w2
-NAME2=np2
+NAME2=n2
 SITE="852us.top"
 
 write_config_file(){
@@ -53,10 +53,9 @@ restart(){
     echo $iid
     echo "重启：$hostname"
     restart_instance $iid
-    #aws ec2 describe-instances --instance-id $iid | grep -e '"LaunchTime"' -e '"Name":'
-  
     host_file="${config_file/.conf/.host}"
     for host in $(<$host_file); do
+      NewIP=$(aws ec2 describe-instances --instance-id $iid | grep PublicIp | awk -F'[:"]' 'NR==2{print $5}')
       echo ./ddns.sh -h $host -p $NewIP
       ./ddns.sh -h $host -p $NewIP
     done

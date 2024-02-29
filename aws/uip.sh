@@ -6,7 +6,7 @@ NAME2=np2
 SITE="852us.top"
 
 write_config_file(){
-  cat > uip-$NAME.conf <<EOF
+  cat > uip-$NAME1.conf <<EOF
 instance-id="$ID"
 hostname="$NAME1.$SITE"
 EOF
@@ -14,7 +14,7 @@ EOF
 
 
 write_host_file(){
-  cat > uip-$NAME.host <<EOF
+  cat > uip-$NAME1.host <<EOF
 $NAME1.$SITE
 $NAME2.$SITE
 EOF
@@ -65,4 +65,4 @@ restart(){
 
 write_config_file
 write_host_file
-restart
+#restart

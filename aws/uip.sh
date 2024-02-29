@@ -1,17 +1,22 @@
 #!/bin/bash
 
+ID="i-0a96fef467a0abf9b"
+NAME1=w2
+NAME2=np2
+SITE="852us.top"
+
 write_config_file(){
-  cat > uip-w1.conf <<EOF
-instance-id="i-05bbad4fa41b1a069"
-hostname="w1.gocoin.one"
+  cat > uip-$NAME.conf <<EOF
+instance-id="$ID"
+hostname="$NAME1.$SITE"
 EOF
 }
 
 
 write_host_file(){
-  cat > uip-w1.host <<EOF
-w1.gocoin.one
-np1.gocoin.one
+  cat > uip-$NAME.host <<EOF
+$NAME1.$SITE
+$NAME2.$SITE
 EOF
 }
 
@@ -58,6 +63,6 @@ restart(){
   done
 }
 
+write_config_file
+write_host_file
 restart
-#write_config_file
-#write_host_file

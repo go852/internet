@@ -65,4 +65,4 @@ restart(){
 
 write_config_file
 write_host_file
-#restart
+restart

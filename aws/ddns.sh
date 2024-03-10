@@ -78,7 +78,7 @@ echo "IP resolved from DNS: $hostname: $dns_ip: "
 
 if [ "$ip" == "$dns_ip" ]; then
   :
-#  exit 0
+  exit 0
 fi
 
 zoneid=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones?name=$zonename" -H "X-Auth-Email: $email"  -H "X-Auth-Key: $key"  -H 'Content-Type: application/json' | awk -F , '{print $1}' | awk -F \" '{print $6}')

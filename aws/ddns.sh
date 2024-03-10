@@ -1,4 +1,11 @@
 #!/bin/bash
+
+## ddns.conf smaple
+# email="xx@email.com"
+# key="abcd0057445a486538cacc92a998bd818f98a"
+# zonename="852us.top"
+##
+
 email=$(egrep email ddns.conf | awk -F'"' '{print $2}')
 key=$(egrep key ddns.conf | awk -F'"' '{print $2}')
 zonename=$(egrep zonename ddns.conf | awk -F'"' '{print $2}')

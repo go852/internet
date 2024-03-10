@@ -1,5 +1,15 @@
 #!/bin/bash
 
+## uip-w2.conf
+# instance-id="i-0a96fef467a0abf9b"
+# hostname="w2.852us.top"
+## 
+
+## uip-w2.host 
+# w2.852us.top
+# n2.852us.top
+## 
+
 ID="i-0a96fef467a0abf9b"
 NAME1=w2
 NAME2=n2

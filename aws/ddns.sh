@@ -6,10 +6,10 @@
 # zonename="852us.top"
 ##
 
-email=$(egrep email ddns.conf | awk -F'"' '{print $2}')
-key=$(egrep key ddns.conf | awk -F'"' '{print $2}')
-zonename=$(egrep zonename ddns.conf | awk -F'"' '{print $2}')
-hostname=$(egrep hostname ddns.conf | awk -F'"' '{print $2}')
+email="$(egrep email ddns.conf | awk -F'"' '{print $2}')"
+key="$(egrep key ddns.conf | awk -F'"' '{print $2}')"
+zonename="$(egrep zonename ddns.conf | awk -F'"' '{print $2}')"
+hostname="$(egrep hostname ddns.conf | awk -F'"' '{print $2}')"
 
 #echo "email: $email"
 #echo "key: $key"

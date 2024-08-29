@@ -11,8 +11,8 @@
 ## 
 
 ID="i-0a96fef467a0abf9b"
-NAME1=w2
-NAME2=n2
+NAME1=w3
+NAME2=n3
 SITE="852us.top"
 
 write_config_file(){

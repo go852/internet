@@ -18,20 +18,24 @@ def autoclick(n):
 
   while True:
     if get_current_app() != "抖音":
+      time.sleep(1)
       continue
 
-    x = int(width*0.35) + random.randint(0, int(width/100))
-    y = int(height*0.5) + random.randint(0, int(height/100))
+    x = int(width*0.35) + random.randint(0, int(width/500))
+    y = int(height*0.5) + random.randint(0, int(height/500))
     print("x: %d, y: %d" %(x,y))
   
-    pyautogui.click(x, y)
-    pyautogui.click()
+    #pyautogui.click(x, y)
+    #pyautogui.click()
+    pyautogui.press('z')
     total_number += 1
     print("点赞用时：%.1f秒,  次数：%d" % (total_seconds, total_number))
     if total_number % 1000 == 0:
-      time.sleep(300)
+      n = 120
+      print("休息%d秒...\n"%n)
+      time.sleep(n)
     else:
-      seconds = random.uniform(0.1, 0.2)
+      seconds = random.uniform(0.02, 0.05)
       total_seconds += seconds
       time.sleep(seconds)
 
